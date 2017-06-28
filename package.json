@@ -1,0 +1,31 @@
+{
+  "name": "i-scraper",
+  "version": "0.0.1",
+  "description": "Intelligent Scraper",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/selvavalluvan/i-scraper.git"
+  },
+  "keywords": [
+    "scraper",
+    "node"
+  ],
+  "author": "Selva Valluvan",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/selvavalluvan/i-scraper/issues"
+  },
+  "homepage": "https://github.com/selvavalluvan/i-scraper#readme",
+  "dependencies": {
+    "bluebird": "^3.5.0",
+    "cheerio": "^1.0.0-rc.1",
+    "express": "^4.15.3",
+    "request": "^2.81.0",
+    "request-promise": "^4.2.1"
+  }
+}
