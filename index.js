@@ -1,4 +1,2 @@
-module.exports = function() {
-    let scrape = require('./lib/scrape');
-    scrape();
-};
+#!/usr/bin/env node
+require('./lib/scrape')();
