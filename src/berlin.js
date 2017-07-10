@@ -1,40 +1,41 @@
-// let express = require('express');
-// let fs = require('fs');
+// nodejs imports
+const Promise = require('bluebird');
 const request = require('request');
 const rp = require('request-promise');
 const cheerio = require('cheerio');
-const URL = require('url');
-var Promise = require('bluebird');
-// let app = express();
 
-// app.get('/', function (req, res) {
+//i-scraper imports
+const parseUrl = require('./utils').parseUrl;
 
-let urlObject = parseUrl('https://www.berlin.de/restaurants/stadtteile/charlottenburg/');
+module.exports = function (url) {
+    return new Promise(function (resolve, reject) {
+        let urlObject = parseUrl(url);
 
-let options = {
-    uri: urlObject.href,
-    transform: function (body) {
-        return cheerio.load(body);
-    }
-};
-rp(options).then(function ($) {
-    let restaurantLists = [];
-    $('#bo_mainbar .i_list .linklist li a').filter(function (index, value) {
-        restaurantLists.push(urlObject.protocol + '//' + urlObject.hostname + value.attribs.href);
+        let options = {
+            uri: urlObject.href,
+            transform: function (body) {
+                return cheerio.load(body);
+            }
+        };
+
+        rp(options).then(function ($) {
+            let restaurantLists = [];
+            $('#bo_mainbar .i_list .linklist li a').filter(function (index, value) {
+                restaurantLists.push(urlObject.protocol + '//' + urlObject.hostname + value.attribs.href);
+            });
+            return restaurantLists;
+        }).then(function (rl) {
+            rl = rl.slice(0, 1);
+            return grabRestaurants(rl);
+        }).then(function (info) {
+            resolve(info);
+        }).catch(function (err) {
+            reject(err);
+        });
     });
-    return restaurantLists;
-}).then(function (rl) {
-    var sliced = rl.slice(0, 1);
-    return grabRestaurants(sliced);
-}).then(function (info) {
-    console.log(info);
-}).catch(function (err) {
-    console.error(err);
-});
+};
 
-// app.listen('8081');
-
-var grabRestaurants = function (list) {
+let grabRestaurants = function (list) {
     return new Promise(function (resolve, reject) {
         let grabRestaurantInfoPromises = [];
         list.map(function (url) {
@@ -66,7 +67,7 @@ let grabRestaurantInfo = function (url) {
             .then(function ($) {
                 restaurant.name = $('.shofi-place .shofi-infobox h3.title').text();
                 restaurant.type = $('.shofi-place .top-links a').text();
-                restaurant.address = $('.shofi-place .shofi-infobox div.bde-contact span.street').text() + ", " + $('.shofi-place .shofi-infobox div.bde-contact span.city').text();
+                restaurant.address = $('.shofi-place .shofi-infobox div.bde-contact span.street').text() + ', ' + $('.shofi-place .shofi-infobox div.bde-contact span.city').text();
                 restaurant.phone = $('.shofi-place .shofi-infobox ul.bde-contact li.tel').children().last().text();
                 restaurant.website = $('.shofi-place .shofi-infobox ul.bde-contact li.web').children().last().text();
                 let location = JSON.parse($('.shofi-place .shofi-map .geomap')[0].attribs.rel);
@@ -79,7 +80,3 @@ let grabRestaurantInfo = function (url) {
             });
     });
 };
-
-function parseUrl(url) {
-    return URL.parse(url);
-}

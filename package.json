@@ -2,10 +2,13 @@
   "name": "i-scraper",
   "version": "0.0.1",
   "description": "Intelligent Scraper",
-  "main": "server.js",
+  "main": "index.js",
+  "bin": {
+    "i-scraper": "./index.js"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server.js"
+    "start": "node index.js"
   },
   "repository": {
     "type": "git",
@@ -13,7 +16,7 @@
   },
   "keywords": [
     "scraper",
-    "node"
+    "restaurants"
   ],
   "author": "Selva Valluvan",
   "license": "ISC",
@@ -24,7 +27,8 @@
   "dependencies": {
     "bluebird": "^3.5.0",
     "cheerio": "^1.0.0-rc.1",
-    "express": "^4.15.3",
+    "fs-extra": "^3.0.1",
+    "prompt": "^1.0.0",
     "request": "^2.81.0",
     "request-promise": "^4.2.1"
   }
