@@ -1,5 +1,4 @@
 'use strict';
-const should = require('should');
 const berlinScrape = require("../lib/berlin");
 const sampleBerlinUrl = 'https://www.berlin.de/restaurants/stadtteile/charlottenburg/';
 

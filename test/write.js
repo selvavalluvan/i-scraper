@@ -1,5 +1,4 @@
 'use strict';
-const should = require('should');
 const fs = require('fs-extra');
 const write = require('../lib/write');
 let directory = __dirname+'/out/';
